@@ -43,7 +43,7 @@ class App extends Component {
   };
 
   getImages(words, page) {
-    this.loaderToggle(false);
+    this.loaderToggle(true);
     axios
       .get(
         `https://pixabay.com/api/?q=${words}&page=${page}&key=${apiKey}&image_type=photo&orientation=horizontal&per_page=12`
