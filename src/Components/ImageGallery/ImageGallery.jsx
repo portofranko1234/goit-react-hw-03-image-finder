@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import ImageGalleryItem from "../ImageGalleryItem/";
+import ImageGalleryItem from "../ImageGalleryItem/ImageGalleryItem";
 import propTypes from "prop-types";
 
 class ImageGallery extends Component {

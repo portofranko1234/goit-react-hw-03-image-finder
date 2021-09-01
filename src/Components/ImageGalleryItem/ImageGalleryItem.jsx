@@ -15,9 +15,9 @@ class ImageGalleryItem extends Component {
     return (
       <li className="ImageGalleryItem">
         <img
-          onClick={(event) => {
-            this.props.modalFn(event.target.attributes[2].value);
-            console.log(event);
+          onClick={(e) => {
+            this.props.modalFn(e.target.attributes[2].value);
+            console.log(e);
           }}
           src={this.props.imageLink}
           alt={this.props.imageAlt}

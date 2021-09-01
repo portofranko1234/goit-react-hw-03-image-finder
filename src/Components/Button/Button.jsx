@@ -5,16 +5,8 @@ class Button extends Component {
   static propTypes = { fn: propTypes.func };
 
   render() {
-    window.scrollTo({
-      top: document.documentElement.scrollHeight,
-      behavior: "smooth",
-    });
     return (
-      <button
-        className="Button"
-        type="button"
-        onClick={(event) => this.props.fn()}
-      >
+      <button className="Button" type="button" onClick={() => this.props.fn()}>
         Load more
       </button>
     );

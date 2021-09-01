@@ -1,14 +1,10 @@
 import React, { Component } from "react";
-import axios from "axios";
-import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
-
-import Searchbar from "./Searchbar";
-import ImageGallery from "./ImageGallery";
-import Button from "./Button";
-import Modal from "./Modal";
-
-const apiKey = "22486349-475ac57b79bf68bd3ecb1002b";
+import * as API from "../src/Gofetch/FetchService";
+import Searchbar from "./Components/Searchbar";
+import ImageGallery from "./Components//ImageGallery/ImageGallery";
+import Button from "./Components/Button";
+import Modal from "./Components/Modal";
 
 class App extends Component {
   state = {
@@ -18,6 +14,7 @@ class App extends Component {
     modalImage: "",
     showLoader: false,
     currentPage: 1,
+    error: false,
   };
 
   toggleModal = () => {
@@ -41,20 +38,26 @@ class App extends Component {
   loaderToggle = (bool) => {
     return this.setState(({ showLoader }) => ({ showLoader: bool }));
   };
-
   getImages(words, page) {
+    let scrollHeight = 0;
+    if (page === 1) {
+      scrollHeight = 0;
+    } else {
+      scrollHeight = document.documentElement.scrollHeight + 144;
+    }
     this.loaderToggle(true);
-    axios
-      .get(
-        `https://pixabay.com/api/?q=${words}&page=${page}&key=${apiKey}&image_type=photo&orientation=horizontal&per_page=12`
-      )
-      .then((response) => {
-        this.pushImagesToState(response);
-        this.loaderToggle(false);
-        this.setState((prevState) => ({
-          currentPage: prevState.currentPage + 1,
-        }));
+    API.get(words, page).then((response) => {
+      this.pushImagesToState(response);
+      this.loaderToggle(false);
+      this.setState((prevState) => ({
+        currentPage: prevState.currentPage + 1,
+      }));
+
+      window.scrollTo({
+        top: scrollHeight,
+        behavior: "smooth",
       });
+    });
   }
 
   searchFormSubmit = (event) => {
@@ -96,15 +99,7 @@ class App extends Component {
             modalFn={this.openLargeImage}
           ></ImageGallery>
         )}
-        {this.state.showLoader && (
-          <Loader
-            className="spin"
-            type="Bars"
-            color="#00BFFF"
-            height={80}
-            width={80}
-          />
-        )}
+        {this.state.showLoader && <Loader />}
         {this.state.searchWords !== "" && <Button fn={this.loadMoreFn} />}
       </div>
     );
